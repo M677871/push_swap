@@ -28,7 +28,7 @@ void	ps_record_op(t_ctx *ctx, t_op op)
 {
 	if (!ctx)
 		return ;
-	if (op < 0 || op >= 11)
+	if (op >= 11)
 		return ;
 	ctx->stats.counts[op]++;
 	ctx->stats.total++;
