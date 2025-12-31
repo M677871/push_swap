@@ -6,7 +6,7 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+# include "libft.h"
 
 typedef struct s_node
 {
@@ -23,14 +24,14 @@ typedef struct s_node
 	int				idx;
 	struct s_node	*next;
 	struct s_node	*prev;
-}	t_node;
+} t_node;
 
 typedef struct s_stack
 {
 	t_node	*head;
 	t_node	*tail;
 	int		size;
-}	t_stack;
+} t_stack;
 
 typedef enum e_op
 {
@@ -45,7 +46,7 @@ typedef enum e_op
 	OP_RRA,
 	OP_RRB,
 	OP_RRR
-}	t_op;
+} t_op;
 
 typedef enum e_strategy
 {
@@ -54,13 +55,13 @@ typedef enum e_strategy
 	STRAT_COMPLEX,
 	STRAT_ADAPTIVE,
 	STRAT_LOW
-}	t_strategy;
+} t_strategy;
 
 typedef struct s_stats
 {
 	int	counts[11];
 	int	total;
-}	t_stats;
+} t_stats;
 
 typedef struct s_ctx
 {
@@ -70,30 +71,39 @@ typedef struct s_ctx
 	t_strategy	selected;
 	t_strategy	used;
 	t_stats		stats;
-}	t_ctx;
+} t_ctx;
 
-/* utils / error */
-void		ps_write_char_fd(char c, int fd);
-void		ps_write_str_fd(const char *s, int fd);
-void		ps_write_int_fd(int n, int fd);
-void		ps_write_double2_fd(double val, int fd);
-int			ps_streq(const char *a, const char *b);
-int			ps_is_whitespace(char c);
-void		ps_exit_error(t_stack *a, t_stack *b, int code);
-
-/* context / flags / bench */
+/* context / flags */
 void		ps_ctx_init(t_ctx *ctx, int print_ops);
 int			ps_parse_flags(int argc, char **argv, t_ctx *ctx, int *out_start);
-const char	*ps_strategy_name(t_strategy s);
-const char	*ps_strategy_complexity(t_strategy s);
+
+/* cleanup / error */
+void		ps_cleanup(t_ctx *ctx, t_stack *a, t_stack *b);
+void		ps_exit_error(t_ctx *ctx, t_stack *a, t_stack *b, int code);
+
+/* stats / op emitter */
 void		ps_stats_init(t_stats *s);
-void		ps_record_op(t_ctx *ctx, t_op op);
+void		ps_emit_op(t_ctx *ctx, t_op op);
+
+/* printing / bench */
+void		ps_putdouble2_fd(double val, int fd);
+void		ps_putpercent2_fd(double val, int fd);
 void		ps_print_bench(const t_ctx *ctx);
 
-/* stack init / utils */
+/* strategy */
+const char	*ps_strategy_name(t_strategy s);
+const char	*ps_strategy_complexity(t_strategy s);
+void		ps_run_strategy(t_stack *a, t_stack *b, t_ctx *ctx);
+
+/* stack core */
 void		stack_reset(t_stack *s);
 t_node		*node_create(int value, int idx);
-int			stack_append_node(t_stack *s, t_node *n);
+void		stack_push_front(t_stack *s, t_node *n);
+void		stack_push_back(t_stack *s, t_node *n);
+t_node		*stack_pop_front(t_stack *s);
+
+/* stack utils */
+t_node		*stack_pop_back(t_stack *s);
 void		stack_free_all(t_stack *s);
 int			stack_is_sorted_asc(t_stack *a);
 int			stack_pos_of_min_idx(t_stack *a);
@@ -102,9 +112,8 @@ int			stack_pos_of_max_idx(t_stack *a);
 /* parsing */
 int			ps_parse_argv_to_ints(int argc, char **argv, int start,
 				int **out_vals, int *out_n);
-void		int_array_sort_asc(int *arr, int n);
+int			int_array_sort_asc(int *arr, int n);
 int			int_array_has_duplicates_sorted(const int *sorted, int n);
-int			int_array_find_index(const int *sorted, int n, int value);
 double		ps_compute_disorder(const int *vals, int n);
 int			ps_build_stack_from_args(int argc, char **argv, int start,
 				t_stack *a, double *out_disorder);
@@ -127,9 +136,5 @@ void		sort_simple(t_stack *a, t_stack *b, t_ctx *ctx);
 void		sort_medium(t_stack *a, t_stack *b, t_ctx *ctx);
 void		sort_complex(t_stack *a, t_stack *b, t_ctx *ctx);
 t_strategy	sort_adaptive(t_stack *a, t_stack *b, t_ctx *ctx);
-void		ps_run_strategy(t_stack *a, t_stack *b, t_ctx *ctx);
-
-/* checker */
-char		*ps_readline(int fd, int *err);
 
 #endif

@@ -6,11 +6,29 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+t_node	*stack_pop_back(t_stack *s)
+{
+	t_node	*n;
+
+	if (!s || s->size == 0)
+		return (NULL);
+	n = s->tail;
+	s->tail = n->prev;
+	if (s->tail)
+		s->tail->next = NULL;
+	else
+		s->head = NULL;
+	n->next = NULL;
+	n->prev = NULL;
+	s->size--;
+	return (n);
+}
 
 void	stack_free_all(t_stack *s)
 {

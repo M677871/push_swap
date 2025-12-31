@@ -6,32 +6,17 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	ps_stats_init(t_stats *s)
+static void	print_disorder(const t_ctx *ctx)
 {
-	int	i;
-
-	if (!s)
-		return ;
-	i = 0;
-	while (i < 11)
-		s->counts[i++] = 0;
-	s->total = 0;
-}
-
-void	ps_record_op(t_ctx *ctx, t_op op)
-{
-	if (!ctx)
-		return ;
-	if (op >= 11)
-		return ;
-	ctx->stats.counts[op]++;
-	ctx->stats.total++;
+	ft_putstr_fd("[bench] disorder: ", 2);
+	ps_putpercent2_fd(ctx->disorder * 100.0, 2);
+	ft_putstr_fd("\n", 2);
 }
 
 static void	print_strategy(const t_ctx *ctx)
@@ -39,16 +24,23 @@ static void	print_strategy(const t_ctx *ctx)
 	t_strategy	use;
 
 	use = ctx->used;
-	ps_write_str_fd("[bench] strategy: ", 2);
-	ps_write_str_fd(ps_strategy_name(ctx->selected), 2);
+	ft_putstr_fd("[bench] strategy: ", 2);
+	ft_putstr_fd(ps_strategy_name(ctx->selected), 2);
 	if (ctx->selected == STRAT_ADAPTIVE)
 	{
-		ps_write_str_fd(" -> ", 2);
-		ps_write_str_fd(ps_strategy_name(use), 2);
+		ft_putstr_fd(" -> ", 2);
+		ft_putstr_fd(ps_strategy_name(use), 2);
 	}
-	ps_write_str_fd(" (", 2);
-	ps_write_str_fd(ps_strategy_complexity(use), 2);
-	ps_write_str_fd(")\n", 2);
+	ft_putstr_fd(" (", 2);
+	ft_putstr_fd(ps_strategy_complexity(use), 2);
+	ft_putstr_fd(")\n", 2);
+}
+
+static void	print_total(const t_ctx *ctx)
+{
+	ft_putstr_fd("[bench] total_ops: ", 2);
+	ft_putnbr_fd(ctx->stats.total, 2);
+	ft_putstr_fd("\n", 2);
 }
 
 static void	print_op_counts(const t_stats *s)
@@ -60,11 +52,11 @@ static void	print_op_counts(const t_stats *s)
 	i = 0;
 	while (i < 11)
 	{
-		ps_write_str_fd("[bench] ", 2);
-		ps_write_str_fd(names[i], 2);
-		ps_write_str_fd(": ", 2);
-		ps_write_int_fd(s->counts[i], 2);
-		ps_write_str_fd("\n", 2);
+		ft_putstr_fd("[bench] ", 2);
+		ft_putstr_fd(names[i], 2);
+		ft_putstr_fd(": ", 2);
+		ft_putnbr_fd(s->counts[i], 2);
+		ft_putstr_fd("\n", 2);
 		i++;
 	}
 }
@@ -73,12 +65,8 @@ void	ps_print_bench(const t_ctx *ctx)
 {
 	if (!ctx)
 		return ;
-	ps_write_str_fd("[bench] disorder: ", 2);
-	ps_write_double2_fd(ctx->disorder * 100.0, 2);
-	ps_write_str_fd("%\n", 2);
+	print_disorder(ctx);
 	print_strategy(ctx);
-	ps_write_str_fd("[bench] total_ops: ", 2);
-	ps_write_int_fd(ctx->stats.total, 2);
-	ps_write_str_fd("\n", 2);
+	print_total(ctx);
 	print_op_counts(&ctx->stats);
 }

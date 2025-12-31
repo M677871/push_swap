@@ -6,11 +6,20 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+static t_strategy	pick_adaptive(double disorder)
+{
+	if (disorder < 0.2)
+		return (STRAT_LOW);
+	if (disorder < 0.5)
+		return (STRAT_MEDIUM);
+	return (STRAT_COMPLEX);
+}
 
 static int	low_pass(t_stack *a, t_ctx *ctx)
 {
@@ -33,12 +42,23 @@ static int	low_pass(t_stack *a, t_ctx *ctx)
 	return (stack_is_sorted_asc(a));
 }
 
-static t_strategy	pick_adaptive(double disorder)
+static t_strategy	run_low(t_stack *a, t_stack *b, t_ctx *ctx)
 {
-	if (disorder < 0.2)
+	if (low_pass(a, ctx))
 		return (STRAT_LOW);
-	if (disorder < 0.5)
+	sort_medium(a, b, ctx);
+	return (STRAT_MEDIUM);
+}
+
+static t_strategy	run_choice(t_stack *a, t_stack *b, t_ctx *ctx,
+		t_strategy choice)
+{
+	if (choice == STRAT_MEDIUM)
+	{
+		sort_medium(a, b, ctx);
 		return (STRAT_MEDIUM);
+	}
+	sort_complex(a, b, ctx);
 	return (STRAT_COMPLEX);
 }
 
@@ -48,17 +68,6 @@ t_strategy	sort_adaptive(t_stack *a, t_stack *b, t_ctx *ctx)
 
 	choice = pick_adaptive(ctx->disorder);
 	if (choice == STRAT_LOW)
-	{
-		if (low_pass(a, ctx))
-			return (STRAT_LOW);
-		sort_medium(a, b, ctx);
-		return (STRAT_MEDIUM);
-	}
-	if (choice == STRAT_MEDIUM)
-	{
-		sort_medium(a, b, ctx);
-		return (STRAT_MEDIUM);
-	}
-	sort_complex(a, b, ctx);
-	return (STRAT_COMPLEX);
+		return (run_low(a, b, ctx));
+	return (run_choice(a, b, ctx, choice));
 }

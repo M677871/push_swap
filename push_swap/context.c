@@ -6,7 +6,7 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	ps_ctx_init(t_ctx *ctx, int print_ops)
 	ps_stats_init(&ctx->stats);
 }
 
+static int	is_flag(const char *arg)
+{
+	return (arg && arg[0] == '-' && arg[1] == '-');
+}
+
 static int	set_strategy(t_ctx *ctx, int *set, t_strategy strat)
 {
 	if (*set)
@@ -35,18 +40,18 @@ static int	set_strategy(t_ctx *ctx, int *set, t_strategy strat)
 
 static int	handle_flag(const char *arg, t_ctx *ctx, int *set)
 {
-	if (ps_streq(arg, "--bench"))
+	if (ft_strncmp(arg, "--bench", 8) == 0)
 	{
 		ctx->bench = 1;
 		return (1);
 	}
-	if (ps_streq(arg, "--simple"))
+	if (ft_strncmp(arg, "--simple", 9) == 0)
 		return (set_strategy(ctx, set, STRAT_SIMPLE) ? 1 : -1);
-	if (ps_streq(arg, "--medium"))
+	if (ft_strncmp(arg, "--medium", 9) == 0)
 		return (set_strategy(ctx, set, STRAT_MEDIUM) ? 1 : -1);
-	if (ps_streq(arg, "--complex"))
+	if (ft_strncmp(arg, "--complex", 10) == 0)
 		return (set_strategy(ctx, set, STRAT_COMPLEX) ? 1 : -1);
-	if (ps_streq(arg, "--adaptive"))
+	if (ft_strncmp(arg, "--adaptive", 11) == 0)
 		return (set_strategy(ctx, set, STRAT_ADAPTIVE) ? 1 : -1);
 	return (0);
 }
@@ -55,17 +60,14 @@ int	ps_parse_flags(int argc, char **argv, t_ctx *ctx, int *out_start)
 {
 	int	i;
 	int	set;
+	int	r;
 
 	i = 1;
 	set = 0;
-	while (i < argc)
+	while (i < argc && is_flag(argv[i]))
 	{
-		int	r;
-
 		r = handle_flag(argv[i], ctx, &set);
-		if (r == 0)
-			break ;
-		if (r < 0)
+		if (r <= 0)
 			return (0);
 		i++;
 	}

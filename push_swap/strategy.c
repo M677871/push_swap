@@ -6,7 +6,7 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ const char	*ps_strategy_complexity(t_strategy s)
 	return ("O(?)");
 }
 
-void	ps_run_strategy(t_stack *a, t_stack *b, t_ctx *ctx)
+static void	run_forced(t_stack *a, t_stack *b, t_ctx *ctx)
 {
-	if (!a || !b || !ctx)
-		return ;
 	if (ctx->selected == STRAT_SIMPLE)
 	{
 		ctx->used = STRAT_SIMPLE;
@@ -57,6 +55,19 @@ void	ps_run_strategy(t_stack *a, t_stack *b, t_ctx *ctx)
 		ctx->used = STRAT_COMPLEX;
 		sort_complex(a, b, ctx);
 	}
+}
+
+static void	run_adaptive(t_stack *a, t_stack *b, t_ctx *ctx)
+{
+	ctx->used = sort_adaptive(a, b, ctx);
+}
+
+void	ps_run_strategy(t_stack *a, t_stack *b, t_ctx *ctx)
+{
+	if (!a || !b || !ctx)
+		return ;
+	if (ctx->selected == STRAT_ADAPTIVE)
+		run_adaptive(a, b, ctx);
 	else
-		ctx->used = sort_adaptive(a, b, ctx);
+		run_forced(a, b, ctx);
 }

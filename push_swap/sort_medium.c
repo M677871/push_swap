@@ -6,7 +6,7 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ static int	int_sqrt(int n)
 	while ((i + 1) * (i + 1) <= n)
 		i++;
 	return (i);
+}
+
+static int	calc_chunk(int n)
+{
+	int	chunk;
+
+	chunk = int_sqrt(n);
+	if (chunk < 1)
+		chunk = 1;
+	return (chunk);
 }
 
 static void	push_to_b_window(t_stack *a, t_stack *b, t_ctx *ctx,
@@ -64,9 +74,7 @@ void	sort_medium(t_stack *a, t_stack *b, t_ctx *ctx)
 
 	if (!a || a->size <= 1 || stack_is_sorted_asc(a))
 		return ;
-	chunk = int_sqrt(a->size);
-	if (chunk < 1)
-		chunk = 1;
+	chunk = calc_chunk(a->size);
 	next = 0;
 	while (a->size > 0)
 		push_to_b_window(a, b, ctx, &next, chunk);

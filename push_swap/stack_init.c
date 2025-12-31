@@ -6,7 +6,7 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,48 @@ t_node	*node_create(int value, int idx)
 	return (n);
 }
 
-int	stack_append_node(t_stack *s, t_node *n)
+void	stack_push_front(t_stack *s, t_node *n)
 {
 	if (!s || !n)
-		return (0);
-	if (s->size == 0)
-	{
-		s->head = n;
-		s->tail = n;
-	}
+		return ;
+	n->prev = NULL;
+	n->next = s->head;
+	if (s->head)
+		s->head->prev = n;
 	else
-	{
-		n->prev = s->tail;
-		s->tail->next = n;
 		s->tail = n;
-	}
+	s->head = n;
 	s->size++;
-	return (1);
+}
+
+void	stack_push_back(t_stack *s, t_node *n)
+{
+	if (!s || !n)
+		return ;
+	n->next = NULL;
+	n->prev = s->tail;
+	if (s->tail)
+		s->tail->next = n;
+	else
+		s->head = n;
+	s->tail = n;
+	s->size++;
+}
+
+t_node	*stack_pop_front(t_stack *s)
+{
+	t_node	*n;
+
+	if (!s || s->size == 0)
+		return (NULL);
+	n = s->head;
+	s->head = n->next;
+	if (s->head)
+		s->head->prev = NULL;
+	else
+		s->tail = NULL;
+	n->next = NULL;
+	n->prev = NULL;
+	s->size--;
+	return (n);
 }

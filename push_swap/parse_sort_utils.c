@@ -6,7 +6,7 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,12 @@ static void	swap_int(int *a, int *b)
 	*b = tmp;
 }
 
-static void	step_swap(int *arr, int *i, int *j)
-{
-	swap_int(&arr[*i], &arr[*j]);
-	(*i)++;
-	(*j)--;
-}
-
 static void	quicksort_ints(int *arr, int left, int right)
 {
 	int	i;
 	int	j;
 	int	pivot;
+
 	i = left;
 	j = right;
 	pivot = arr[left + (right - left) / 2];
@@ -43,7 +37,7 @@ static void	quicksort_ints(int *arr, int left, int right)
 		while (arr[j] > pivot)
 			j--;
 		if (i <= j)
-			step_swap(arr, &i, &j);
+			swap_int(&arr[i++], &arr[j--]);
 	}
 	if (left < j)
 		quicksort_ints(arr, left, j);
@@ -51,10 +45,12 @@ static void	quicksort_ints(int *arr, int left, int right)
 		quicksort_ints(arr, i, right);
 }
 
-void	int_array_sort_asc(int *arr, int n)
+int	int_array_sort_asc(int *arr, int n)
 {
-	if (n > 1)
-		quicksort_ints(arr, 0, n - 1);
+	if (!arr || n < 2)
+		return (0);
+	quicksort_ints(arr, 0, n - 1);
+	return (1);
 }
 
 int	int_array_has_duplicates_sorted(const int *sorted, int n)
@@ -69,27 +65,6 @@ int	int_array_has_duplicates_sorted(const int *sorted, int n)
 		i++;
 	}
 	return (0);
-}
-
-int	int_array_find_index(const int *sorted, int n, int value)
-{
-	int	lo;
-	int	hi;
-	int	mid;
-
-	lo = 0;
-	hi = n - 1;
-	while (lo <= hi)
-	{
-		mid = lo + (hi - lo) / 2;
-		if (sorted[mid] == value)
-			return (mid);
-		if (sorted[mid] < value)
-			lo = mid + 1;
-		else
-			hi = mid - 1;
-	}
-	return (-1);
 }
 
 double	ps_compute_disorder(const int *vals, int n)

@@ -6,27 +6,30 @@
 #    By: you <you@student.42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/27                                 #+#    #+#            #
-#    Updated: 2025/12/27                                 ###   ########.fr      #
+#    Updated: 2025/12/30                                 ###   ########.fr      #
 #                                                                              #
 # **************************************************************************** #
 
 CC      = cc
-CFLAGS  = -Wall -Wextra -Werror
+CFLAGS  = -Wall -Wextra -Werror -I . -I libft
 
 NAME    = push_swap
-BONUS   = checker
+LIBFT_DIR = libft
+LIBFT     = $(LIBFT_DIR)/libft.a
 
 SRCS    = push_swap.c \
-          parse_values.c \
-          parse_sort_utils.c \
-          push_swap_parsing.c \
-          push_swap_utils.c \
-          push_swap_error.c \
           context.c \
+          push_swap_error.c \
+          push_swap_utils.c \
+          stats_emit.c \
           bench.c \
           strategy.c \
           stack_init.c \
           stack_utils.c \
+          parse_tokens.c \
+          parse_values.c \
+          parse_sort_utils.c \
+          push_swap_parsing.c \
           operations_swap.c \
           operations_push.c \
           operations_rotate.c \
@@ -36,40 +39,24 @@ SRCS    = push_swap.c \
           sort_big.c \
           sort_adaptive.c
 
-BONUS_SRCS = checker.c checker_readline.c \
-          parse_values.c \
-          parse_sort_utils.c \
-          push_swap_parsing.c \
-          push_swap_utils.c \
-          push_swap_error.c \
-          context.c \
-          bench.c \
-          stack_init.c \
-          stack_utils.c \
-          operations_swap.c \
-          operations_push.c \
-          operations_rotate.c \
-          operations_reverse_rotate.c
-
 OBJS    = $(SRCS:.c=.o)
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
 
-bonus: $(BONUS)
-
-$(BONUS): $(BONUS_OBJS)
-	$(CC) $(CFLAGS) $(BONUS_OBJS) -o $(BONUS)
+$(NAME): $(LIBFT) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
 clean:
-	rm -f $(OBJS) $(BONUS_OBJS)
+	$(RM) $(OBJS)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME) $(BONUS)
+	$(RM) $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re

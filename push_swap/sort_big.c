@@ -6,11 +6,18 @@
 /*   By: you <you@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27                                 #+#    #+#             */
-/*   Updated: 2025/12/27                                 ###   ########.fr       */
+/*   Updated: 2025/12/30                                 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+static int	need_sort(t_stack *a)
+{
+	if (!a || a->size <= 1)
+		return (0);
+	return (!stack_is_sorted_asc(a));
+}
 
 static int	max_bits(t_stack *a)
 {
@@ -51,13 +58,11 @@ static void	radix_pass(t_stack *a, t_stack *b, t_ctx *ctx, int bit)
 		pa(a, b, ctx);
 }
 
-void	sort_complex(t_stack *a, t_stack *b, t_ctx *ctx)
+static void	radix_sort(t_stack *a, t_stack *b, t_ctx *ctx)
 {
 	int	bit;
 	int	mb;
 
-	if (!a || a->size <= 1 || stack_is_sorted_asc(a))
-		return ;
 	mb = max_bits(a);
 	bit = 0;
 	while (bit < mb)
@@ -65,4 +70,11 @@ void	sort_complex(t_stack *a, t_stack *b, t_ctx *ctx)
 		radix_pass(a, b, ctx, bit);
 		bit++;
 	}
+}
+
+void	sort_complex(t_stack *a, t_stack *b, t_ctx *ctx)
+{
+	if (!need_sort(a))
+		return ;
+	radix_sort(a, b, ctx);
 }
