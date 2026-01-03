@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by <login1>, <login2>.*
+*This project has been created as part of the 42 curriculum by <miissa>, <rmrad>.*
 
 ## Description
 push_swap sorts a list of integers using two stacks and a restricted instruction set.
@@ -33,11 +33,11 @@ When `--bench` is present, metrics are printed to stderr after sorting:
 No bench output is written to stdout.
 
 ## Contributors
-- <login1>: <contribution summary>
-- <login2>: <contribution summary>
+- <miissa>: <>
+- <rmrad>: <>
 
 ## Resources
 - Donald Knuth, The Art of Computer Programming, Vol. 3 (Sorting and Searching).
 - 42 push_swap subject and evaluation notes.
-- AI usage: used for edge-case review, refactoring to 42 Norm constraints,
-  and drafting README/bench output descriptions.
+- AI usage: used for deep and clear understand the project,
+  and drafting README.
