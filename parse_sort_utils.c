@@ -6,7 +6,7 @@
 /*   By: miissa <miissa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 12:54:47 by miissa            #+#    #+#             */
-/*   Updated: 2025/12/31 08:12:24 by miissa           ###   ########.fr       */
+/*   Updated: 2026/01/10 10:28:30 by miissa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	quicksort_ints(int *arr, int left, int right)
 
 int	int_array_sort_asc(int *arr, int n)
 {
-	if (!arr || n < 2)
+	if (!arr || n < 0)
 		return (0);
 	quicksort_ints(arr, 0, n - 1);
 	return (1);

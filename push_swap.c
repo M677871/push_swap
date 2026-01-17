@@ -6,7 +6,7 @@
 /*   By: miissa <miissa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 09:14:09 by miissa            #+#    #+#             */
-/*   Updated: 2026/01/05 10:00:44 by miissa           ###   ########.fr       */
+/*   Updated: 2026/01/06 10:47:23 by miissa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,11 @@ static int	parse_flags_or_error(int argc, char **argv, t_ctx *ctx, int *start)
 	return (1);
 }
 
-static int	build_stack_or_error(int argc, char **argv, int start, t_stack *a,
-		t_ctx *ctx)
+static int	build_stack_or_error(t_input *input, t_stack *a, t_ctx *ctx)
 {
-	if (start >= argc)
+	if (input->start >= input->argc)
 		return (0);
-	if (!ps_build_stack_from_args(argc, argv, start, a, &ctx->disorder))
+	if (!ps_build_stack_from_args(input, a, &ctx->disorder))
 		return (-1);
 	return (1);
 }
@@ -50,16 +49,20 @@ int	main(int argc, char **argv)
 	t_stack	a;
 	t_stack	b;
 	t_ctx	ctx;
-	int		start;
 	int		r;
+	t_input	input;
 
+	input_init(&input);
+	input.argc = argc;
+	input.argv = argv;
+	input.start = 0;
 	init_all(&a, &b, &ctx);
-	r = parse_flags_or_error(argc, argv, &ctx, &start);
+	r = parse_flags_or_error(input.argc, input.argv, &ctx, &input.start);
 	if (r < 0)
 		ps_exit_error(&ctx, &a, &b, 1);
 	if (r == 0)
 		return (0);
-	r = build_stack_or_error(argc, argv, start, &a, &ctx);
+	r = build_stack_or_error(&input, &a, &ctx);
 	if (r < 0)
 		ps_exit_error(&ctx, &a, &b, 1);
 	if (r > 0)

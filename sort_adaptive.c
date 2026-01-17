@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_adaptive.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miissa <miissa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmrad <rmrad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 12:42:20 by miissa            #+#    #+#             */
-/*   Updated: 2026/01/05 11:13:41 by miissa           ###   ########.fr       */
+/*   Updated: 2026/01/12 12:07:43 by rmrad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,18 @@ static int	low_pass(t_stack *a, t_ctx *ctx)
 	{
 		if (a->top->next && a->top->index > a->top->next->index)
 			sa(a, ctx);
-		ra(a, ctx);
+		else
+			ra(a, ctx);
 		i++;
 	}
-	while (i-- > 0)
+	while (i-- > 1)
 		rra(a, ctx);
 	return (stack_is_sorted_asc(a));
 }
 
 static t_strategy	run_low(t_stack *a, t_stack *b, t_ctx *ctx)
 {
-	if (!low_pass(a, ctx))
+	if (low_pass(a, ctx))
 		return (START_LOW);
 	sort_medium_using_chunk(a, b, ctx);
 	return (START_MEDIUM);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_token.c                                      :+:      :+:    :+:   */
+/*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miissa <miissa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 07:16:51 by miissa            #+#    #+#             */
-/*   Updated: 2026/01/03 13:34:49 by miissa           ###   ########.fr       */
+/*   Updated: 2026/01/12 12:39:55 by miissa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	is_space(char c)
 {
-	return (c == ' ' || c == '\t' || c == '\n'
-		|| c == '\r' || c == '\v' || c == '\f');
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v'
+		|| c == '\f');
 }
 
 static char	*dup_ws_as_space(const char *s)
@@ -72,27 +72,27 @@ char	**ps_split_ws(const char *s)
 
 int	ps_parse_token(const char *s, int *out)
 {
-	int	i;
-	int	val;
+	long	val;
+	int		i;
+	int		sign;
 
 	if (!s || !*s)
 		return (0);
 	i = 0;
+	sign = 1;
 	if (s[i] == '+' || s[i] == '-')
-		i++;
+		if (s[i++] == '-')
+			sign = -1;
 	if (!ft_isdigit(s[i]))
 		return (0);
+	val = 0;
 	while (ft_isdigit(s[i]))
-		i++;
+		val = val * 10 + (s[i++] - '0');
 	if (s[i] != '\0')
 		return (0);
-	val = ft_atoi(s);
-	if (val == INT_MAX || val == INT_MIN)
-	{
-		if (ft_strncmp(s, "2147483647", 10)
-			&& ft_strncmp(s, "-2147483648", 11))
-			return (0);
-	}
-	*out = val;
+	val *= sign;
+	if (val < INT_MIN || val > INT_MAX)
+		return (0);
+	*out = (int)val;
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: miissa <miissa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 07:21:16 by miissa            #+#    #+#             */
-/*   Updated: 2026/01/05 11:45:51 by miissa           ###   ########.fr       */
+/*   Updated: 2026/01/06 09:57:34 by miissa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,14 @@ static int	fill_stack_from_values(t_stack *a, const int *vals,
 	return (1);
 }
 
-int	ps_build_stack_from_args(int argc, char **argv, int start, t_stack *a,
-		double *out_disorder)
+int	ps_build_stack_from_args(t_input *input, t_stack *a, double *out_disorder)
 {
 	int	*vals;
 	int	*sorted;
 	int	n;
 
 	stack_reset(a);
-	if (!ps_parse_argv_to_ints(argc, argv, start, &vals, &n))
+	if (!ps_parse_argv_to_ints(input, &vals, &n))
 		return (0);
 	if (out_disorder)
 		*out_disorder = ps_compute_disorder(vals, n);

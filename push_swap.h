@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miissa <miissa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmrad <rmrad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 09:14:06 by miissa            #+#    #+#             */
-/*   Updated: 2026/01/05 13:47:52 by miissa           ###   ########.fr       */
+/*   Updated: 2026/01/06 11:51:57 by rmrad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 # include "Libft/libft.h"
-# include "Printf/ft_printf.h"
+# include<limits.h>
 
 typedef struct s_node
 {
@@ -70,6 +70,18 @@ typedef struct s_ctx
 	t_strategy		used;
 	t_stats			stats;
 }					t_ctx;
+typedef struct e_input
+{
+	int				argc;
+	char			**argv;
+	int				start;
+}					t_input;
+
+typedef struct s_chunk
+{
+	int				*next;
+	int				chunk;
+}					t_chunk;
 void				ps_ctx_init(t_ctx *ctx, int print_ops);
 int					ps_parse_flags(int argc, char **argv, t_ctx *ctx,
 						int *out_start);
@@ -87,24 +99,21 @@ int					stack_is_sorted_asc(t_stack *s);
 int					stack_pos_of_min_index(t_stack *s);
 int					stack_pos_of_max_index(t_stack *s);
 int					int_array_has_duplicates_sorted(const int *array, int size);
-// int					array_find_index(const int *array, int size, int value);
-int					ps_parse_argv_to_ints(int argc, char **argv, int start,
-						int **out_vals, int *out_n);
 const char			*ps_strategy_name(t_strategy s);
 const char			*ps_strategy_complexity(t_strategy s);
 void				ps_run_strategy(t_stack *a, t_stack *b, t_ctx *ctx);
 void				ps_free_split(char **parts);
 char				**ps_split_ws(const char *s);
 int					ps_parse_token(const char *s, int *out);
-int					ps_build_stack_from_args(int argc, char **argv, int start,
-						t_stack *a, double *out_disorder);
-int					ps_parse_argv_to_ints(int argc, char **argv, int start,
-						int **out_vals, int *out_n);
+
+int					ps_build_stack_from_args(t_input *input, t_stack *a,
+						double *out_disorder);
+int					ps_parse_argv_to_ints(t_input *input, int **out_vals,
+						int *out_n);
+
 int					int_array_sort_asc(int *arr, int n);
 int					int_array_has_duplicates_sorted(const int *sorted, int n);
 double				ps_compute_disorder(const int *vals, int n);
-int					ps_build_stack_from_args(int argc, char **argv, int start,
-						t_stack *a, double *out_disorder);
 void				sa(t_stack *a, t_ctx *ctx);
 void				sb(t_stack *a, t_ctx *ctx);
 void				ss(t_stack *a, t_stack *b, t_ctx *ctx);
@@ -125,5 +134,6 @@ void				stack_push_front(t_stack *s, t_node *n);
 void				stack_push_back(t_stack *s, t_node *n);
 t_node				*stack_pop_front(t_stack *s);
 t_node				*stack_pop_back(t_stack *s);
+void				input_init(t_input *input);
 
 #endif

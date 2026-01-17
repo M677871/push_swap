@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_value.c                                      :+:      :+:    :+:   */
+/*   parse_values.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miissa <miissa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 07:40:04 by miissa            #+#    #+#             */
-/*   Updated: 2026/01/03 13:09:45 by miissa           ###   ########.fr       */
+/*   Updated: 2026/01/06 09:58:15 by miissa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ static int	parse_arg(const char *arg, int **vals, int *n, int *cap)
 	return (ok);
 }
 
-int	ps_parse_argv_to_ints(int argc, char **argv, int start, int **out_vals,
-		int *out_n)
+int	ps_parse_argv_to_ints(t_input *input, int **out_vals, int *out_n)
 {
 	int	*vals;
 	int	cap;
@@ -85,10 +84,10 @@ int	ps_parse_argv_to_ints(int argc, char **argv, int start, int **out_vals,
 	vals = NULL;
 	cap = 0;
 	n = 0;
-	i = start;
-	while (i < argc)
+	i = input->start;
+	while (i < input->argc)
 	{
-		if (!parse_arg(argv[i], &vals, &n, &cap))
+		if (!parse_arg(input->argv[i], &vals, &n, &cap))
 			return (free(vals), 0);
 		i++;
 	}

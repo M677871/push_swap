@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_medium.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miissa <miissa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmrad <rmrad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 12:42:24 by miissa            #+#    #+#             */
-/*   Updated: 2026/01/05 12:03:13 by miissa           ###   ########.fr       */
+/*   Updated: 2026/01/06 11:52:33 by rmrad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,18 @@ static int	calculate_chunck(int n)
 	return (chunck);
 }
 
-static void	push_to_b_window(t_stack *a, t_stack *b, t_ctx *ctx, int *next,
-		int chunck)
+static void	push_to_b_window(t_stack *a, t_stack *b, t_ctx *ctx, t_chunk *c)
 {
-	if (a->top->index <= *next)
+	if (a->top->index <= *(c->next))
 	{
 		pb(a, b, ctx);
 		rb(b, ctx);
-		(*next)++;
+		(*(c->next))++;
 	}
-	else if (a->top->index < *next + chunck)
+	else if (a->top->index < *(c->next) + c->chunk)
 	{
 		pb(a, b, ctx);
-		(*next)++;
+		(*(c->next))++;
 	}
 	else
 		ra(a, ctx);
@@ -74,15 +73,20 @@ static void	push_max_to_a(t_stack *a, t_stack *b, t_ctx *ctx)
 
 void	sort_medium_using_chunk(t_stack *a, t_stack *b, t_ctx *ctx)
 {
-	int	chunck;
-	int	next;
+	int		chunck;
+	int		next;
+	t_chunk	c;
 
 	if (a && a->size > 1 && !stack_is_sorted_asc(a))
 	{
 		chunck = calculate_chunck(a->size);
 		next = 0;
 		while (a->size > 0)
-			push_to_b_window(a, b, ctx, &next, chunck);
+		{
+			c.next = &next;
+			c.chunk = chunck;
+			push_to_b_window(a, b, ctx, &c);
+		}
 		while (b->size > 0)
 			push_max_to_a(a, b, ctx);
 	}

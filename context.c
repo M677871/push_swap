@@ -6,7 +6,7 @@
 /*   By: miissa <miissa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 08:06:22 by miissa            #+#    #+#             */
-/*   Updated: 2026/01/05 13:00:02 by miissa           ###   ########.fr       */
+/*   Updated: 2026/01/08 10:36:41 by miissa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	handle_flag(const char *arr, t_ctx *ctx, int *set)
 		return (set_strategy(ctx, set, START_MEDIUM));
 	if (ft_strncmp(arr, "--complex", 10) == 0)
 		return (set_strategy(ctx, set, START_COMPLEX));
-	if (ft_strncmp(arr, "--adaptive", 9) == 0)
+	if (ft_strncmp(arr, "--adaptive", 11) == 0)
 		return (set_strategy(ctx, set, START_ADAPTIVE));
 	return (0);
 }
