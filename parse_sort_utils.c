@@ -47,8 +47,8 @@ static void	quicksort_ints(int *arr, int left, int right)
 
 int	int_array_sort_asc(int *arr, int n)
 {
-	if (!arr || n < 0)
-		return (0);
+	if (!arr || n <= 1)
+		return (n >= 0);
 	quicksort_ints(arr, 0, n - 1);
 	return (1);
 }
