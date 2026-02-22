@@ -25,20 +25,25 @@ static int	low_pass(t_stack *a, t_ctx *ctx)
 {
 	int	i;
 	int	n;
+	int	rotations;
 
 	if (!a || a->size <= 1 || stack_is_sorted_asc(a))
 		return (1);
 	n = a->size;
 	i = 0;
+	rotations = 0;
 	while (i < n)
 	{
 		if (a->top->next && a->top->index > a->top->next->index)
 			sa(a, ctx);
 		else
+		{
 			ra(a, ctx);
+			rotations++;
+		}
 		i++;
 	}
-	while (i-- > 1)
+	while (rotations-- > 0)
 		rra(a, ctx);
 	return (stack_is_sorted_asc(a));
 }
