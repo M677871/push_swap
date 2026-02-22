@@ -72,9 +72,9 @@ char	**ps_split_ws(const char *s)
 
 int	ps_parse_token(const char *s, int *out)
 {
-	long	val;
-	int		i;
-	int		sign;
+	long long	val;
+	int			i;
+	int			sign;
 
 	if (!s || !*s)
 		return (0);
