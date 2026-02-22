@@ -27,6 +27,7 @@ SRCS    = push_swap.c \
           sort_medium.c \
           sort_complex.c \
           sort_adaptive.c \
+          sort_small.c \
           input_init.c
 
 OBJS    = $(SRCS:.c=.o)

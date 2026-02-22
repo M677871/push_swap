@@ -63,8 +63,16 @@ static void	run_forced(t_stack *a, t_stack *b, t_ctx *ctx)
 
 void	ps_run_strategy(t_stack *a, t_stack *b, t_ctx *ctx)
 {
-	if (a && b && ctx)
+	if (!a || !b || !ctx)
+		return ;
+	if (a->size <= 3)
 	{
-		run_forced(a, b, ctx);
+		if (ctx->selected == START_ADAPTIVE)
+			ctx->used = START_LOW;
+		else
+			ctx->used = ctx->selected;
+		sort_small_stack(a, ctx);
+		return ;
 	}
+	run_forced(a, b, ctx);
 }

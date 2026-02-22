@@ -125,6 +125,7 @@ void				rr(t_stack *a, t_stack *b, t_ctx *ctx);
 void				rra(t_stack *a, t_ctx *ctx);
 void				rrb(t_stack *b, t_ctx *ctx);
 void				rrr(t_stack *a, t_stack *b, t_ctx *ctx);
+void				sort_small_stack(t_stack *a, t_ctx *ctx);
 void				sort_simple_using_selection(t_stack *a, t_stack *b,
 						t_ctx *ctx);
 void				sort_medium_using_chunk(t_stack *a, t_stack *b, t_ctx *ctx);
