@@ -64,7 +64,7 @@ When `--bench` is used, **metrics are printed to `stderr`** after sorting:
 - Total number of operations  
 - Count of each operation: `sa`, `sb`, `ss`, `pa`, `pb`, `ra`, `rb`, `rr`, `rra`, `rrb`, `rrr`  
 
-> No sorting operations are printed to `stdout` when bench mode is active.
+> Sorting operations are still printed to `stdout`; bench output goes to `stderr` only.
 
 ## Technical Choices & Algorithms
 1. **Stacks**:  
