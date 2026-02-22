@@ -16,7 +16,7 @@ int	stack_is_sorted_asc(t_stack *s)
 {
 	t_node	*temp;
 
-	if (!s || s->size == 1)
+	if (!s || s->size <= 1)
 		return (1);
 	temp = s->top;
 	while (temp && temp->next)
