@@ -1,0 +1,19 @@
+# Build artifacts
+*.o
+*.a
+push_swap
+checker
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Subject PDF (reference only, do not push)
+*.pdf
