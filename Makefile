@@ -1,5 +1,5 @@
 CC      = cc
-CFLAGS  = -Wall -Wextra -Werror -I . -I libft
+CFLAGS  = -Wall -Wextra -Werror -I . -I Libft
 RM      = rm -f
 
 NAME    = push_swap
