@@ -27,14 +27,14 @@ static const char	*op_name(t_op op)
 	names[8] = "rra\n";
 	names[9] = "rrb\n";
 	names[10] = "rrr\n";
-	if (op < 0 || op > OP_RRR)
+	if ((int)op < 0 || op > OP_RRR)
 		return (NULL);
 	return (names[op]);
 }
 
 static void	count_op(t_ctx *ctx, t_op op)
 {
-	if (ctx && (op >= 0 && op <= OP_RRR))
+	if (ctx && ((int)op >= 0 && op <= OP_RRR))
 	{
 		ctx->stats.count[op]++;
 		ctx->stats.total++;
