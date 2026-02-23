@@ -10,7 +10,7 @@ checker
 *.swp
 *.swo
 *~
-
+*.exe
 # OS files
 .DS_Store
 Thumbs.db
