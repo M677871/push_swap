@@ -13,7 +13,7 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 # include "Libft/libft.h"
-# include<limits.h>
+# include <limits.h>
 
 typedef struct s_node
 {
@@ -46,7 +46,7 @@ typedef enum e_op
 	OP_RRR
 }					t_op;
 
-typedef enum e_startegy
+typedef enum e_strategy
 {
 	START_SIMPLE,
 	START_MEDIUM,
@@ -70,7 +70,7 @@ typedef struct s_ctx
 	t_strategy		used;
 	t_stats			stats;
 }					t_ctx;
-typedef struct e_input
+typedef struct s_input
 {
 	int				argc;
 	char			**argv;
